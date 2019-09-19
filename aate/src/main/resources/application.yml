@@ -1,0 +1,51 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    #initialize: false 
+    initialization-mode: always
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${host}/${database}
+    username: ${username}
+    password: ${password}
+#spring:
+#  jpa:
+#    show-sql: true
+#    database: ORACLE
+#    hibernate.ddl-auto: update
+#  datasource:
+#    #url: jdbc:oracle:thin:@//172.20.4.133:1521/orcl
+#    url: jdbc:oracle:thin:@//${host}:1521/xe
+#    username: ${username}
+#    password: ${password}
+#    driver-class-name: oracle.jdbc.OracleDriver
+    
+  mail:
+    default-encoding: UTF-8
+    host: mail.aate.gob.pe
+    username: alertaplicaciones
+    password: alerta$2018
+    port: 587
+    properties:
+      mail:
+        ssl:
+          enable: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true       
+            required: true 
+          ssl:
+            trust: mail.aate.gob.pe    
+    protocol: smtp
+    test-connection: false
+    
+    

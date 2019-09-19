@@ -1,0 +1,263 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style ">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">USUARIO</h4>
+                        </li>
+                        <li class="breadcrumb-item bcrumb-1">
+                            <a routerLink="/home">
+                                <i class="fa fa-home"></i> Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Usuario</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Basic Examples -->
+        <div class="row clearfix">
+            <!-- <router-outlet></router-outlet> -->
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><strong>Listado de Usuarios</strong></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <form>
+                                        <div class="form-row align-items-center">
+                                            <div class="col-auto has-error">
+                                                <label class="sr-only" for="inlineFormInput">Name</label>
+                                                <input type="text" maxlength="20" class="form-control mb-2" (keyup)="applyFilter($event.target.value)" id="inlineFormInput" placeholder="Buscar">
+                                            </div>
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary mb-2">Buscar <i class="fa fa-search"></i></button>
+                                            </div>
+                                            <div class="col-auto">
+                                                <button (click)="open(content)" class="btn btn-primary mb-2">Agregar <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <table id="tbl-ListaSistemas" class="table table-bordered" style="width:100%">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Nombres</th>
+                                                <th>Login</th>
+                                                <th>Correo</th>
+                                                <th>Bloqueado</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of listaUsuarios | paginate: { itemsPerPage: 7, currentPage: page }" (dblclick)="open(content, item)" class="cursor">
+                                                <td>{{ item.usucod }}</td>
+                                                <td>{{ item.usunom + ' ' + item.usuapepat + ' ' + item.usuapemat }}</td>
+                                                <td>{{ item.usulog }}</td>
+                                                <td>{{ item.usucor }}</td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.usublo == 0, 'badge-danger': item.usublo == 1 }">{{ item.usublo == 1 ? 'SI' : 'NO' }}</span></td>
+                                                <td><span class="badge" [ngClass]="{'badge-success': item.estreg == 1, 'badge-danger': item.estreg == 0 }">{{ item.estreg == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-link" (click)="open(content, item)"><i class="fa fa-pencil"></i></button>
+                                                    <!-- <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button> -->
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div>
+                                        <ngb-pagination [collectionSize]="total" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Basic Examples -->
+        <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Usuario</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+            </div>
+            <div class="modal-body">
+                <form class="row" [formGroup]="form" (submit)="registrar()" novalidate>
+                    <div class="col-sm-3">
+                        <!-- <img class="profile-user-img img-responsive img-circle" src="assets/images/foto.jpg" alt="User profile picture"> -->
+                        <ngb-tabset type="pills" orientation="vertical" (tabChange)="selectedTabId = $event.nextId">
+                            <ngb-tab id="acceso" title="Acceso"></ngb-tab>
+                            <ngb-tab id="personal" title="Personal"></ngb-tab>
+                            <ngb-tab id="trabajo" title="Trabajo"></ngb-tab>
+                            <ngb-tab id="contacto" title="Contacto"></ngb-tab>
+                            <ngb-tab id="configuracion" title="Config"></ngb-tab>
+                        </ngb-tabset>
+                    </div>
+                    <div class="col-sm-9">
+                        <div [hidden]="selectedTabId != 'acceso'">
+                            <div class="form-group">
+                                <label>Usuario</label>
+                                <div class="input-group mb-3">
+                                    <input class="form-control" maxlength="50" upperCase formControlName="usulog" placeholder="Usuario" name="usulog" type="text">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" (click)="buscarUsuarioLdap()" type="button">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input class="form-control" maxlength="20" formControlName="usupas" placeholder="Contraseña" name="usupas" type="password">
+                            </div>
+                        </div>
+                        <div [hidden]="selectedTabId != 'personal'">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>Tipo Doc.</label>
+                                    <select class="custom-select" [ngClass]="{'is-valid': form.get('usutipdoc').valid, 'is-invalid': form.get('usutipdoc').invalid }" formControlName="usutipdoc">
+                                                <option value="1">DNI</option>
+                                                <option value="2">CE</option>
+                                                <option value="3">LIB</option>
+                                                <option value="4">PTP</option>
+                                                <option value="5">RUC</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Seleccione.
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <label>Número</label>
+                                    <input class="form-control" maxlength="12" [ngClass]="{'is-valid': form.get('usudni').valid, 'is-invalid': form.get('usudni').invalid }" formControlName="usudni" placeholder="Número" name="usudni" type="text">
+                                    <div class="invalid-feedback">
+                                        Ingrese el nro documento.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Nombres</label>
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usunom').valid, 'is-invalid': form.get('usunom').invalid }" formControlName="usunom" placeholder="Nombre" name="usunom" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label>Apellido Paterno</label>
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapepat" placeholder="Apellido Paterno" name="usuapepat" type="text">
+                                <div class="invalid-feedback">
+                                    Ingrese el apellido.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Apellido Materno</label>
+                                <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usuapepat').valid, 'is-invalid': form.get('usuapepat').invalid }" formControlName="usuapemat" placeholder="Apellido Materno" name="usuapemat" type="text">
+                                <div class="invalid-feedback">
+                                    Ingrese el apellido.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="mr-2">Genero</label>
+                                <label class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input radio-dark-gray" formControlName="ususexo" name="ususexo" value="1" type="radio" id="gender-0">
+                                    <label class="custom-control-label text-capitalize" for="gender-0">
+                                        <i aria-hidden="true" class="fa fa-male"></i>
+                                    </label>
+                                </label>
+                                <label class="custom-control custom-radio custom-control-inline">
+                                    <input class="custom-control-input radio-dark-gray" formControlName="ususexo" name="ususexo" value="2" type="radio" id="gender-1">
+                                    <label class="custom-control-label text-capitalize" for="gender-1">
+                                         <i aria-hidden="true" class="fa fa-female"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label>Foto</label>
+                                <input class="form-control" type="text">
+                            </div> -->
+                        </div>
+                        <div [hidden]="selectedTabId != 'trabajo'">
+                            <div class="form-group">
+                                <label>Área</label>
+                                <input class="form-control" maxlength="20" upperCase formControlName="usuarea" placeholder="Área" name="usuarea" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label>Cargo</label>
+                                <input class="form-control" maxlength="20" upperCase formControlName="usucargo" placeholder="Cargo" name="usucargo" type="text">
+                            </div>
+                        </div>
+                        <div [hidden]="selectedTabId != 'contacto'">
+                            <div class="form-group"><label>Correo</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                             <i class="fa fa-envelope-o"></i>
+                                         </span>
+                                    </div>
+                                    <input class="form-control" maxlength="50" upperCase [ngClass]="{'is-valid': form.get('usucor').valid, 'is-invalid': form.get('usucor').invalid }" formControlName="usucor" placeholder="Correo" name="usucor" type="text">
+                                    <div class="invalid-feedback">
+                                        Ingrese el email.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"><label>Anexo</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                             <i class="fa fa-phone"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control" maxlength="10" upperCase formControlName="usuanexo" placeholder="Anexo" name="usuanexo" type="text"></div>
+                            </div>
+                            <div class="form-group"><label class="text-gray">Dirección</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                             <i class="fa fa-map-marker"></i>
+                                         </span>
+                                    </div>
+                                    <input class="form-control" maxlength="20" upperCase formControlName="usudirec" placeholder="Dirección" name="usudirec" type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div [hidden]="selectedTabId != 'configuracion'">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input radio-dark-gray" formControlName="estreg" name="estreg" [value]="1" id="radioActive" type="radio">
+                                <label class="custom-control-label" for="radioActive">Activo</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input radio-dark-gray" formControlName="estreg" name="estreg" [value]="0" id="radioDeleted" type="radio">
+                                <label class="custom-control-label" for="radioDeleted">Inactivo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 bg-white">
+                        <button class="btn btn-success mr-1" type="submit">Grabar</button>
+                        <button class="btn btn-danger" (click)="c('Close click')" type="button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </ng-template>
+        <!-- <ng-template #modalsistema let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title">Asignar Sistema</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+            </div>
+            <div class="modal-body">
+                <label>Sistema</label>
+                <dual-list [sort]="sorter" [source]="sistemasAptos" [key]="siscod" [display]="sisnom" [filter]="filter" [(destination)]="sistemasSelect" [format]="format" height="265px"></dual-list>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Aceptar</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="c('Close click')">Cancelar</button>
+            </div>
+        </ng-template> -->
+    </div>
+</section>

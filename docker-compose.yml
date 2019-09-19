@@ -1,0 +1,97 @@
+version: '3.4'
+
+services:
+  postgres_server:
+    build: ./database/
+    image: dockermarvic/postgres-sisac:latest
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=sisacse
+      - POSTGRES_USER=postgres
+    volumes: 
+      - data-postgres:/var/lib/postgres/
+    restart: on-failure
+    networks: 
+      - backend
+    # deploy:
+    #  replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.3"
+    #      memory: 512M
+    #  restart_policy:
+    #    condition: on-failure
+    #  placement:
+    #    constraints: [node.role == worker]
+
+  apisisac:
+    build: ./aate/
+    image: dockermarvic/backend-sisac:latest
+    environment: 
+      - host=postgres_server
+      - database=sisacse
+      - username=postgres
+      - password=123
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres_server
+    restart: on-failure
+    networks: 
+      - backend
+    # deploy:
+    #  replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.2"
+    #      memory: 512M
+    #  restart_policy:
+    #    condition: on-failure
+    #  placement:
+    #    constraints: [node.role == worker]
+
+  proxy:
+    build: ./proxy-backend/
+    image: dockermarvic/proxy-sisac:latest
+    ports:
+      - "80:80"
+    depends_on: 
+      - apisisac
+    restart: on-failure
+    networks:
+      - backend
+    # deploy:
+    #  replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.2"
+    #      memory: 256M
+    #  restart_policy:
+    #    condition: on-failure
+    #  placement:
+    #    constraints: [node.role == manager]
+
+  frontend:
+    build: ./sisac-frontend/
+    image: dockermarvic/frontend-sisac:latest
+    ports:
+      - 8090:80
+    networks:
+      - frontend
+    # deploy:
+    #  replicas: 1
+    #  resources:
+    #    limits:
+    #      cpus: "0.2"
+    #      memory: 256M
+    #  restart_policy:
+    #    condition: on-failure
+    #  placement:
+    #    constraints: [node.role == worker]
+
+volumes:
+  data-postgres:
+  
+networks:
+  backend:
+  frontend:
