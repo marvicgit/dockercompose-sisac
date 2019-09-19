@@ -18,4 +18,12 @@ public interface IRolMenuRepo extends JpaRepository<RolMenu,Integer> {
 	@Query(value = "select rm.ROLMENCOD from RolMenu rm join rm.menu m join m.sistema s join rm.rol r where s.SISCOD = :siscod and r.ROLCOD = :rolcod")
 	List<Integer> buscarIdRolMenuxSistema(@Param("siscod") Integer siscod, @Param("rolcod") Integer rolcod);
 	
+	@Query(value ="select count(rm) from RolMenu rm join Sistema s on s.SISCOD = rm.SISCOD join rm.rol r join rm.menu m where s.SISCOD = :siscod") 
+	long existeSistema(@Param("siscod") Integer siscod);
+	
+	@Query(value ="select count(rm) from RolMenu rm join Sistema s on s.SISCOD = rm.SISCOD join rm.rol r join rm.menu m where m.MENCOD = :mencod") 
+	long existeMenu(@Param("mencod") Integer mencod);
+	
+	@Query(value ="select count(rm) from RolMenu rm join Sistema s on s.SISCOD = rm.SISCOD join rm.rol r join rm.menu m where r.ROLCOD = :rolcod") 
+	long existeRol(@Param("rolcod") Integer rolcod);
 }

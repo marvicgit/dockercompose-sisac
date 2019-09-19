@@ -13,4 +13,7 @@ public interface IRolMenuService extends ICrud<RolMenu>{
 	Integer registrarTransaccional(RolMenuDTO rolmenu);
 	List<SistemaRolDTO> buscarSistemaRol();
 	List<Integer> buscarIdRolMenuxSistema(@Param("siscod") Integer siscod, @Param("rolcod") Integer rolcod);
+	long existeSistema(Integer siscod);
+	long existeMenu(Integer mencod);
+	long existeRol(Integer rolcod);
 }

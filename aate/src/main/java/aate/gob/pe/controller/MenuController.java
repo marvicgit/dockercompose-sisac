@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import aate.gob.pe.exception.ModeloNotFoundException;
 import aate.gob.pe.model.Menu;
 import aate.gob.pe.service.IMenuService;
+import aate.gob.pe.service.IRolMenuService;
 
 @RestController
 @RequestMapping("/menus")
@@ -25,6 +26,8 @@ public class MenuController {
 
 	@Autowired
 	private IMenuService service;
+	@Autowired
+	private IRolMenuService serviceRolMen;
 
 	@GetMapping
 	public ResponseEntity<List<Menu>> listar()
@@ -68,6 +71,10 @@ public class MenuController {
 	
 	@DeleteMapping("/{id}")
 	public void eliminar(@PathVariable("id") Integer id) {
+		long existe = serviceRolMen.existeMenu(id);
+		if(existe > 0) {
+			throw new ModeloNotFoundException("El menu tiene asignación de rol");
+		}
 		service.eliminar(id);
 	}
 }

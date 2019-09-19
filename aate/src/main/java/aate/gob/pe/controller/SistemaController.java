@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aate.gob.pe.exception.ModeloNotFoundException;
 import aate.gob.pe.model.Sistema;
+import aate.gob.pe.repo.IUserSisRolFuncionalidadRepo;
+import aate.gob.pe.service.IRolMenuService;
+import aate.gob.pe.service.ISisRolFuncionalidadService;
 import aate.gob.pe.service.ISistemaService;
 
    
@@ -25,6 +28,12 @@ public class SistemaController {
 
 	@Autowired
 	private ISistemaService service;
+	@Autowired
+	private IUserSisRolFuncionalidadRepo serviceUserRol;
+	@Autowired
+	private ISisRolFuncionalidadService serviceRolFun;
+	@Autowired
+	private IRolMenuService serviceRolMen;
 	
 	@GetMapping
 	public ResponseEntity<List<Sistema>> listar()
@@ -68,6 +77,15 @@ public class SistemaController {
 	
 	@DeleteMapping("/{id}")
 	public void eliminar(@PathVariable("id") Integer id) {
+		if(serviceUserRol.existeSistema(id) > 0) {
+			throw new ModeloNotFoundException("El sistema tiene asignación de usuario");
+		}
+		if(serviceRolFun.existeSistema(id) > 0) {
+			throw new ModeloNotFoundException("El sistema tiene asignación de funcionalidades");
+		}
+		if(serviceRolFun.existeSistema(id) > 0) {
+			throw new ModeloNotFoundException("El sistema tiene asignación de roles");
+		}
 		service.eliminar(id);
 	}
 }

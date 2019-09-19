@@ -69,7 +69,7 @@
                                                 <td><span class="badge" [ngClass]="{'badge-success': item.estreg == 1, 'badge-danger': item.estreg == 0 }">{{ item.estreg == '1' ? 'ACTIVO' : 'INACTIVO' }}</span></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-link" (click)="open(content, item)"><i class="fa fa-pencil"></i></button>
-                                                    <!-- <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button> -->
+                                                    <button class="btn btn-sm btn-link" (click)="elimnar(item)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>

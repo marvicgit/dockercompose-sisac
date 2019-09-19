@@ -107,5 +107,23 @@ public class SisRolFuncionalidadServiceImpl implements ISisRolFuncionalidadServi
           return entidad;
     }
 
+	@Override
+	public long existeSistema(Integer siscod) {
+		// TODO Auto-generated method stub
+		return repo.existeSistema(siscod);
+	}
+
+	@Override
+	public long existeRol(Integer rolcod) {
+		// TODO Auto-generated method stub
+		return repo.existeRol(rolcod);
+	}
+
+	@Override
+	public long existeFuncionalidad(Integer funcod) {
+		// TODO Auto-generated method stub
+		return repo.existeFuncionalidad(funcod);
+	}
+
 
 }

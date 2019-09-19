@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 // @ts-ignore
 import * as antDesignTheme from '../../ng-select/themes/ant.design.theme.css';
 // @ts-ignore
-import * as defaultTheme from '@ng-select/ng-select/themes/default.theme.css';
+import * as defaultTheme from '../../../node_modules/@ng-select/ng-select/themes/default.theme.css';
 // @ts-ignore
 import * as materialTheme from '../../ng-select/themes/material.theme.css';
 

@@ -71,4 +71,22 @@ public class RolMenuServiceImpl implements IRolMenuService {
 		// TODO Auto-generated method stub
 		return repo.buscarIdRolMenuxSistema(siscod, rolcod);
 	}
+
+	@Override
+	public long existeSistema(Integer siscod) {
+		// TODO Auto-generated method stub
+		return repo.existeSistema(siscod);
+	}
+
+	@Override
+	public long existeMenu(Integer mencod) {
+		// TODO Auto-generated method stub
+		return repo.existeMenu(mencod);
+	}
+
+	@Override
+	public long existeRol(Integer rolcod) {
+		// TODO Auto-generated method stub
+		return repo.existeRol(rolcod);
+	}
 }

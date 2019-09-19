@@ -15,4 +15,7 @@ public interface ISisRolFuncionalidadService extends ICrud<SisRolFuncionalidad>{
 	void eliminarRolMenFunc(SisRolFuncionalidadDTO sisrolfun);
 	List<Integer> buscarIdRolMenuFunxSistema(@Param("siscod") Integer siscod, @Param("rolcod") Integer rolcod);
 	RolMenuFuncDTO obtenerAcceso(@Param("vSissig")String vSissig,@Param("vUsulog")String  vUsulog);
+	long existeSistema(Integer siscod);
+	long existeRol(Integer rolcod);
+	long existeFuncionalidad(Integer funcod);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import aate.gob.pe.DTO.ReporteDTO;
 import aate.gob.pe.exception.ModeloNotFoundException;
 import aate.gob.pe.model.Usuario;
+import aate.gob.pe.service.IUserSisRolFuncionalidadService;
 import aate.gob.pe.service.IUsuarioService;
 
 
@@ -29,6 +31,8 @@ public class UsuarioController {
 	private IUsuarioService service;
 	@Autowired
 	private BCryptPasswordEncoder bcrypt;
+	@Autowired
+	private IUserSisRolFuncionalidadService serviceUseRol;
 	
 	@GetMapping
 	public List<Usuario> listar()
@@ -82,5 +86,14 @@ public class UsuarioController {
 			throw new ModeloNotFoundException("No se encontró el usuario en el ldap");
 		}
 		return new ResponseEntity<List<ReporteDTO>>(reporte, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void eliminar(@PathVariable("id") Integer id) {
+		long existe = serviceUseRol.existeUsuario(id);
+		if(existe > 0) {
+			throw new ModeloNotFoundException("El usuario tiene asignación de sistema");
+		}
+		service.eliminar(id);
 	}
 }

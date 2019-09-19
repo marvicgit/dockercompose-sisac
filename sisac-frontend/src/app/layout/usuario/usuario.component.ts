@@ -136,6 +136,27 @@ export class UsuarioComponent implements OnInit {
   }
 
   elimnar(data: Usuario) {
+    Swal.fire({
+      title: '¿Estas seguro de eliminar?',
+      text: 'No podras revertirlo!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminarlo!',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.service.eliminar(data.usucod).subscribe(() => {
+          Swal.fire(
+            'Eliminado!',
+            'El registro fue eliminado correctamente.',
+            'success'
+          );
+          this.listar();
+        });
+      }
+    });
   }
 
   registrar() {

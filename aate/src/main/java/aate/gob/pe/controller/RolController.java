@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import aate.gob.pe.exception.ModeloNotFoundException;
 import aate.gob.pe.model.Rol;
+import aate.gob.pe.service.IRolMenuService;
 import aate.gob.pe.service.IRolService;
+import aate.gob.pe.service.ISisRolFuncionalidadService;
 
 @RestController
 @RequestMapping("/roles")
@@ -25,7 +27,10 @@ public class RolController {
 
 	@Autowired
 	private IRolService service;
-	
+	@Autowired
+	private IRolMenuService serviceRolMen;
+	@Autowired
+	private ISisRolFuncionalidadService serviceRolFun;
 	
 	@GetMapping
 	public ResponseEntity<List<Rol>> listar()
@@ -61,6 +66,12 @@ public class RolController {
 	
 	@DeleteMapping("/{id}")
 	public void eliminar(@PathVariable("id") Integer id) {
+		if(serviceRolMen.existeRol(id) > 0) {
+			throw new ModeloNotFoundException("El rol tiene asignación de menú");
+		}
+		if(serviceRolFun.existeRol(id) > 0) {
+			throw new ModeloNotFoundException("El rol tiene asignación de funcionalidad");
+		}
 		service.eliminar(id);
 	}
 	

@@ -48,80 +48,21 @@ public class UserSisRolFuncionalidadServiceImpl implements IUserSisRolFuncionali
 	}
 
 	@Override
-	public Integer registrarTransaccionalSis(UsuarioSisRolDTO usersisrol) { 
-
-		/*
-		 * usersisrol.getLstSistema().forEach(s -> { List<Integer> listaRMF=
-		 * repoRMF.buscarIdRolMenuFunxSistema(s.getSISCOD(), 1); listaRMF.forEach(i -> {
-		 * UserSisRolFuncionalidad urmf = new UserSisRolFuncionalidad();
-		 * SisRolFuncionalidad rmf = new SisRolFuncionalidad(); //
-		 * rmf.setROLMENFUNCOD(i); // urmf.setRolMenuFuncionalidad(rmf); Usuario usuario
-		 * = new Usuario(); usuario.setUSUCOD(usersisrol.getUsuario().getUSUCOD());
-		 * urmf.setUsuario(usuario); repo.save(urmf); }); });
-		 */ 
-			return 1;
-
-	}
-	
-	@Override
-	public Integer registrarTransaccionalSisRol(UsuarioSisRolDTO usersisrol) { 
-		/*
-		 * if(usersisrol.getLstRol() == null) { usersisrol.getLstSistema().forEach(s ->
-		 * { List<Integer> listaRMF= repoRMF.buscarIdRolMenuFunxSistema(s.getSISCOD(),
-		 * 1); listaRMF.forEach(i -> { UserSisRolFuncionalidad urmf = new
-		 * UserSisRolFuncionalidad(); SisRolFuncionalidad rmf = new
-		 * SisRolFuncionalidad(); // rmf.setROLMENFUNCOD(i); //
-		 * urmf.setRolMenuFuncionalidad(rmf); Usuario usuario = new Usuario();
-		 * usuario.setUSUCOD(usersisrol.getUsuario().getUSUCOD());
-		 * urmf.setUsuario(usuario); repo.save(urmf); }); }); return 1;
-		 * 
-		 * } else { usersisrol.getLstRol().forEach(r -> {
-		 * repo.eliminarUsuRolMenFunc(r.getSISCOD(),
-		 * usersisrol.getUsuario().getUSUCOD()); }); usersisrol.getLstRol().forEach(r ->
-		 * { List<Integer> listaRMF= repoRMF.buscarIdRolMenuFunxSistema(r.getSISCOD(),
-		 * r.getROLCOD()); listaRMF.forEach(i -> { UserSisRolFuncionalidad urmf = new
-		 * UserSisRolFuncionalidad(); SisRolFuncionalidad rmf = new
-		 * SisRolFuncionalidad(); // rmf.setROLMENFUNCOD(i); //
-		 * urmf.setRolMenuFuncionalidad(rmf); Usuario usuario = new Usuario();
-		 * usuario.setUSUCOD(usersisrol.getUsuario().getUSUCOD());
-		 * urmf.setUsuario(usuario); repo.save(urmf); }); }); return 1; }
-		 */
-		return 1;
-	}
-
-	@Override
-	public List<UsuarioSistemaDTO> listarUsuarioSistema() {
-		// TODO Auto-generated method stub
-		return null; //repo.listarUsuarioSistema();
-	}
-
-	@Override
-	public List<UsuarioSistemaDTO> listarSistemasAptos() {
-		// TODO Auto-generated method stub
-		return null; //repo.listarSistemasAptos();
-	}
-
-	@Override
 	public List<UsuarioSistemaRolDTO> listarUsuarioSistemaRol() {
 		// TODO Auto-generated method stub
 		return repo.listarUsuarioSistemaRol();
 	}
 
 	@Override
-	public List<UsuarioSistemaRolDTO> listarSistemaRolAptos() {
+	public long existeUsuario(Integer usucod) {
 		// TODO Auto-generated method stub
-		return null; //repo.listarSistemaRolAptos();
+		return repo.existeUsuario(usucod);
 	}
 
 	@Override
-	public void eliminarUsuRolMenFunc(Integer siscod, Integer usucod) {
+	public long existeSistema(Integer siscod) {
 		// TODO Auto-generated method stub
-		//repo.eliminarUsuRolMenFunc(siscod, usucod);
+		return repo.existeSistema(siscod);
 	}
 
-	@Override
-	public void eliminarAsignacionSisUsu(Integer usucod) {
-		// TODO Auto-generated method stub
-		//repo.eliminarAsignacionSisUsu(usucod);
-	}
 }

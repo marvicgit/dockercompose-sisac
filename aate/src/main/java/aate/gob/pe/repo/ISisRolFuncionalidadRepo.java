@@ -31,5 +31,14 @@ public interface ISisRolFuncionalidadRepo extends JpaRepository<SisRolFuncionali
       
       @Query(value="select distinct new aate.gob.pe.DTO.RolMenuFuncDTO(s.SISSIG, u.USULOG, u.USUCOD) from UserSisRolFuncionalidad usrf inner join usrf.usuario u inner join Sistema s on s.SISCOD = usrf.SISCOD where s.SISSIG = :vSissig and u.USULOG = :vUsulog")
       RolMenuFuncDTO ObtenerAcceso(@Param("vSissig") String vSissig, @Param("vUsulog") String  vUsulog);
+      
+      @Query(value ="select count(rf) from SisRolFuncionalidad rf join Sistema s on s.SISCOD = rf.SISCOD join rf.rol r join rf.funcionalidad f where s.SISCOD = :siscod") 
+  	  long existeSistema(@Param("siscod") Integer siscod);
+      
+      @Query(value ="select count(rf) from SisRolFuncionalidad rf join Sistema s on s.SISCOD = rf.SISCOD join rf.rol r join rf.funcionalidad f where r.ROLCOD = :rolcod") 
+  	  long existeRol(@Param("rolcod") Integer rolcod);
+      
+      @Query(value ="select count(rf) from SisRolFuncionalidad rf join Sistema s on s.SISCOD = rf.SISCOD join rf.rol r join rf.funcionalidad f where f.FUNCOD = :funcod") 
+  	  long existeFuncionalidad(@Param("funcod") Integer funcod);
 	
 }

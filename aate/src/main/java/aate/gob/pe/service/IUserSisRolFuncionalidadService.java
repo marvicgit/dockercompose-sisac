@@ -10,12 +10,7 @@ import aate.gob.pe.DTO.UsuarioSistemaRolDTO;
 import aate.gob.pe.model.UserSisRolFuncionalidad;
 
 public interface IUserSisRolFuncionalidadService extends ICrud<UserSisRolFuncionalidad>{
-	Integer registrarTransaccionalSis(UsuarioSisRolDTO usersisrol);
-	Integer registrarTransaccionalSisRol(UsuarioSisRolDTO usersisrol);
-	List<UsuarioSistemaDTO> listarUsuarioSistema();
-	List<UsuarioSistemaDTO> listarSistemasAptos();
 	List<UsuarioSistemaRolDTO> listarUsuarioSistemaRol();
-	List<UsuarioSistemaRolDTO> listarSistemaRolAptos();
-	void eliminarUsuRolMenFunc(@Param("siscod") Integer siscod, @Param("usucod") Integer usucod);
-	void eliminarAsignacionSisUsu(@Param("usucod") Integer usucod);
+	long existeUsuario(Integer usucod);
+	long existeSistema(Integer siscod);
 }
